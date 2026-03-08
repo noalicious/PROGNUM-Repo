@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[ ]:
+
+
+import numpy as np
+from numpy import sin, cos, exp, pi
+from scipy.integrate import quad
+
+
+print("example function: x**4 + exp**(sin(x) + cos(x))")
+user_input = input("\nEnter a function of x: ")
+
+try:
+    f = lambda x: eval(user_input)
+    
+    #scipy
+    quad_res = quad(f, 0, pi)[0]
+
+    # Monte Carlo Integration
+    n = 1000000
+    x_vals = np.random.uniform(0, pi, n)
+
+    context = {"x": x_vals, "sin": sin, "cos": cos, "exp": exp, "pi": pi}
+    y_vals = eval(user_input, context)
+    
+    mc_res = (pi - 0) * np.mean(y_vals)
+
+    # 4. Results
+    print(f"\nResults for x=0 to x=pi:")
+    print(f"Scipy Result: {quad_res:.6f}")
+    print(f"Monte Carlo Result: {mc_res:.6f}")
+
+except NameError as e:
+    print(f"Error: You used an unknown function or variable. {e}")
+except SyntaxError:
+    print("Error: The expression is not valid Python math. Did you use ** for powers?")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+
+# In[ ]:
+
+
+
+
